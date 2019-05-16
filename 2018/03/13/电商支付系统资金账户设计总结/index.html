@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang class="loading">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>电商支付系统资金账户设计总结 - 喝茶读书不争朝夕</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="hokiechan,"> 
+    <meta name="description" content="HokieChan的小站,什么叫支付资金账户？我所理解的支付资金账户是指交易资金的所有者权益的凭证，换种说法就是创建一种账户来存证客户资金交易的数据。
+解决什么问题？从流程维度来看，资金账户主要从账户认证、支付、风控、提现、,"> 
+    <meta name="author" content="HokieChan"> 
+    <link rel="alternative" href="atom.xml" title="喝茶读书不争朝夕" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+</html>
+<body class="loading">
+    <span id="config-title" style="display:none">喝茶读书不争朝夕</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="http://yoursite.com"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">电商支付系统资金账户设计总结</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class="main">
+        <h1 class="title">电商支付系统资金账户设计总结</h1>
+        <div class="stuff">
+            <span>三月 13, 2018</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <h2 id="什么叫支付资金账户？"><a href="#什么叫支付资金账户？" class="headerlink" title="什么叫支付资金账户？"></a>什么叫支付资金账户？</h2><p>我所理解的支付资金账户是指交易资金的所有者权益的凭证，换种说法就是创建一种账户来存证客户资金交易的数据。</p>
+<h2 id="解决什么问题？"><a href="#解决什么问题？" class="headerlink" title="解决什么问题？"></a>解决什么问题？</h2><p>从流程维度来看，资金账户主要从账户认证、支付、风控、提现、结算、对账、信用等方面解决各种问题；<br>账户认证：实名认证，保证交易流、资金流、票流都对应到同一个主体；<br>支付：确认支付账户的状态，是否有余额，是否允许支付等；<br>风控：通过实名认证等手段确认用户主体，避免套现、洗钱、自买自卖等行为发生；<br>结算：通过账户结算到余额<br>对账：财务对账的需求，包括个人、商户、资源商等对账需求。</p>
+<h2 id="说说账户"><a href="#说说账户" class="headerlink" title="说说账户"></a>说说账户</h2><p>账户是交易的前置条件，有了账户才有了交易数据。所以，在电商系统中，交易会涉及到三个账户： 交易主体账户、交易对方账户以及支付渠道账户。<br>设计账户模型的字段有：<br>会员名<br>用户名<br>真实姓名&amp;企业名称<br>账户号<br>账户状态<br>开户时间<br>操作：查看账本和状态设置<br>说说账本<br>我们在账户之下还有一层账本的概念，一个账户下可以对应多个账本，账本可以理解为会计科目。账本可以查询到账本的明细，我们不关心交易的过程，单纯认为账本的金额变动我们就产生一条记录，记录没有涉及过程没有状态，表示的是一种结果。<br>账本模型的字段有：<br>账户号<br>账本ID<br>账本类型<br>余额<br>币种<br>状态<br>账本明细<br>业务流水号<br>日期<br>名称<br>收入（元）支出（元）<br>账户余额（元）<br>账本科目<br>账户认证<br>由于所处的公司并没有申请支付牌照相关的牌照，所以在认证的时候我们采用了和第三方支付公司合作，验证三要素姓名、身份证号、卡号信息的校验，如果卡验证是其本人，我们这默认验证通过，如果不符，则验证不通过<br>关于企业用户，市面上并没有校验对公账户之类的接口，所以我们则采用人工校验的方式。具体流程不在此做阐述<br>前端产品思路<br>资金账户：余额账本、结算账本等 涉及的功能有提现、支付、结算、退款<br>账本明细：账户明细在于记录账户的结果，表示账本的收入和支出<br>交易记录：账户明细在于记录账户的过程，和业务关联性强，如订单，支付等<br>中台产品架构<br>1、客户资金账户号管理<br>此业务为财务管理人员以客户的维度对资金账户进行管理，即客户资金账户号管理，可直接查看客户维度下的所有资金账户类型，以及账户明细、账户的管理以及状态配置<br>2、资金账户管理<br>此业务为财务管理人员以账户类型的维度对资金账户进行管理，即客户资金账户类型管理，可直接查看账户维度下的所有资金账户类型，以及账户明细、账户的管理以及状态配置<br>3、账户明细管理<br>此业务为财务管理人员以对资金账户（所有类型）的明细进行管理，可直接查看所有资金账户类型下的账户明细（提现，支付，退款，冻结等操作提供账户的明细记录）<br>4、资金账户权限管理<br>此业务为财务管理人员以对资金账户（所有类型）的权限进行管理，可设置（是否允许提现，支付，退款，结算、冻结，以及提现费率）<br>5、交易管理<br>此业务为财务管理人员以对资金账户（所有类型）的交易记录进行管理，可直接查看所有资金账户类型下的交易记录（提现，支付，退款，结算、冻结等操作的交易记录），以及对交易记录的确认、录入凭证<br>6、退款记录管理<br>此业务为财务管理人员以对资金账户（所有类型）的退款记录进行管理，可直接查看所有资金账户类型下的退款记录<br>以及对退款记录的确认、录入凭证<br>7、结算管理<br>此业务为财务管理人员以对资金账户（所有类型）的结算记录进行管理，可直接查看所有资金账户类型下的结算记录<br>以及对结算记录的确认、录入凭证<br>8、支付管理<br>此业务为财务管理人员以对资金账户（所有类型）的结算记录进行管理，可直接查看所有资金账户类型下的结算记录<br>以及对支付记录的确认、录入凭证<br>9、提现管理<br>此业务为财务管理人员以对资金账户（所有类型）的结算记录进行管理，可直接查看所有资金账户类型下的结算记录<br>以及对提现记录的确认、录入凭证</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>因为支付相关类的产品涉及的部门比较多，可能跟法务、运营、客服、财务等业务部门关联比较密切，流程梳理阶段需要多开会确定并形成签名的文档。中台可能有很多涉及到审批类的工作，原型评审阶段建议多和业务部门确定，涉及到增加工作量的问题，建议请示领导出相应的文件进行落实。以免做出来的产品没人用，卡在某个流程节点上。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src>
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title="0" data-url="http://link.hhtjim.com/163/5146554.mp3"></li>
+                    
+                        <li title="1" data-url="http://link.hhtjim.com/qq/001faIUs4M2zna.mp3"></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id="gitalk-container" class="comment link" data-ae="false" data-ci data-cs data-r data-o data-a data-d="false">查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>
